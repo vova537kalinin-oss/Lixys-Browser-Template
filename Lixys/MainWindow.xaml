@@ -1,0 +1,73 @@
+﻿<Window x:Class="lixys.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        Title="Lixys Browser" Height="700" Width="1200"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+
+    <Window.Resources>
+        <Style x:Key="CaptionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="Foreground" Value="#444444"/>
+            <Setter Property="Width" Value="45"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E5E5E5"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CloseButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E81123"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="White" CornerRadius="12" BorderBrush="#DCDCDC" BorderThickness="1" ClipToBounds="True">
+        <Grid Margin="0,0,0,-22">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="White" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" Margin="10,0,10,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0">
+                  
+                    <TextBlock Text="Lixys Browser" FontSize="12" Foreground="#555555" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="" Style="{StaticResource CaptionButtonStyle}" Click="Minimize_Click"/>
+                    <Button x:Name="BtnRestore" Content="" Style="{StaticResource CaptionButtonStyle}" Click="MaximizeRestore_Click"/>
+                    <Button Content="" Style="{StaticResource CloseButtonStyle}" Click="Close_Click"/>
+                </StackPanel>
+            </Grid>
+
+            <Border Grid.Row="1" Background="White" Padding="5" BorderBrush="#D6D6D6" BorderThickness="0,0,0,1">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="" FontFamily="Segoe MDL2 Assets" Click="Back_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="5,0" Width="40" Height="35"/>
+                    <Button Content="" FontFamily="Segoe MDL2 Assets" Click="Forward_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="5,0" Width="40" Height="35"/>
+                    <Button Content="" FontFamily="Segoe MDL2 Assets" Click="Reload_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="5,0" Width="40" Height="35"/>
+                    <Button Content="" FontFamily="Segoe MDL2 Assets" Click="Home_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="5,0" Width="40" Height="35"/>
+
+                    <Border Background="#F1F3F4" CornerRadius="18" Margin="10,2" Width="600">
+                        <TextBox x:Name="UrlBar" Background="Transparent" BorderThickness="0" 
+                                 VerticalContentAlignment="Center" Padding="15,0" 
+                                 FontSize="14" KeyDown="UrlBar_KeyDown"/>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <wv2:WebView2 x:Name="webView" Grid.Row="2" Margin="0,0,0,29"/>
+        </Grid>
+    </Border>
+</Window>

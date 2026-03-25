@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>lixys</title>
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0a0f1e 0%, #0e1428 100%);
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            min-height: 100vh;
+            padding: 30px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* главный контейнер */
+        .homepage {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(18, 25, 45, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 2rem;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* дата и время */
+        .datetime-section {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+        }
+        .time {
+            font-size: 4.2rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #f0f3ff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .date {
+            font-size: 1.2rem;
+            color: #b9c7ff;
+            margin-top: 8px;
+            font-weight: 400;
+        }
+
+        /* поисковая панель */
+        .search-engine-bar {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 60px;
+            padding: 6px 12px 6px 24px;
+            margin-bottom: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .engine-label {
+            color: #cbd5ff;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        select {
+            background: #1e2a3e;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            outline: none;
+            font-family: inherit;
+            border: 1px solid #3a4a6e;
+        }
+        select:hover {
+            background: #2a3b54;
+            border-color: #6c8eff;
+        }
+
+        /* форма поиска */
+        .search-form {
+            margin: 1.8rem 0 2rem;
+        }
+        .input-group {
+            display: flex;
+            background: rgba(0, 0, 0, 0.45);
+            border-radius: 80px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s;
+        }
+        .input-group:focus-within {
+            border-color: #5f7eff;
+            box-shadow: 0 0 0 3px rgba(95, 126, 255, 0.3);
+            background: rgba(0, 0, 0, 0.6);
+        }
+        .search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 16px 24px;
+            font-size: 1.1rem;
+            color: white;
+            outline: none;
+            font-family: inherit;
+        }
+        .search-input::placeholder {
+            color: rgba(220, 230, 255, 0.6);
+        }
+        .search-btn {
+            background: #2d3e6e;
+            border: none;
+            width: 70px;
+            border-radius: 80px;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin: 5px;
+        }
+        .search-btn:hover {
+            background: #5f7eff;
+            transform: scale(0.96);
+        }
+
+        /* БЛОК БЫСТРЫХ ССЫЛОК (плитки) */
+        .shortcuts-container {
+            margin-top: 1.2rem;
+        }
+        .shortcuts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .shortcuts-header h3 {
+            color: #e0e7ff;
+            font-weight: 500;
+            font-size: 1.3rem;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .add-shortcut-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: #b9c7ff;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .add-shortcut-btn:hover {
+            background: #5f7eff30;
+            border-color: #8aa2ff;
+            color: white;
+        }
+        .shortcuts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+        .shortcut-card {
+            background: rgba(20, 30, 55, 0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 24px;
+            padding: 16px 8px 12px;
+            text-align: center;
+            transition: 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            position: relative;
+            word-break: break-word;
+        }
+        .shortcut-card:hover {
+            background: rgba(40, 55, 90, 0.9);
+            transform: translateY(-3px);
+            border-color: rgba(95, 126, 255, 0.6);
+        }
+        .shortcut-icon {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: #9bb4ff;
+        }
+        .shortcut-title {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #f0f3ff;
+            margin-bottom: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 4px;
+        }
+        .shortcut-url {
+            font-size: 0.65rem;
+            color: #8d9fdd;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .card-actions {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: flex;
+            gap: 6px;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+        .shortcut-card:hover .card-actions {
+            opacity: 1;
+        }
+        .card-actions button {
+            background: rgba(0,0,0,0.6);
+            border: none;
+            border-radius: 20px;
+            width: 26px;
+            height: 26px;
+            font-size: 0.7rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.1s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-actions button.edit-btn:hover {
+            background: #3b82f6;
+        }
+        .card-actions button.delete-btn:hover {
+            background: #ef4444;
+        }
+        .empty-shortcuts {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 32px;
+            color: #9aa9d0;
+            font-size: 0.9rem;
+        }
+
+        /* МОДАЛЬНОЕ ОКНО (добавление/редактирование) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(6px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #121c2c;
+            border-radius: 32px;
+            max-width: 420px;
+            width: 90%;
+            padding: 1.8rem;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+        }
+        .modal-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-content input {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 10px 0;
+            background: #1f2a40;
+            border: 1px solid #334155;
+            border-radius: 28px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+        }
+        .modal-content input:focus {
+            border-color: #5f7eff;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .modal-buttons button {
+            padding: 8px 20px;
+            border-radius: 40px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .modal-buttons .save-btn {
+            background: #5f7eff;
+            color: white;
+        }
+        .modal-buttons .cancel-btn {
+            background: #334155;
+            color: #e2e8f0;
+        }
+        .modal-buttons button:hover {
+            filter: brightness(1.1);
+            transform: scale(0.97);
+        }
+        footer {
+            text-align: center;
+            margin-top: 1.8rem;
+            font-size: 0.7rem;
+            color: #6c7aa5;
+        }
+        .info-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: #1e293bdd;
+            backdrop-filter: blur(12px);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
+            border: 1px solid #ffffff30;
+            white-space: nowrap;
+        }
+        .info-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+        @media (max-width: 650px) {
+            .homepage { padding: 1.3rem; }
+            .time { font-size: 2.8rem; }
+            .shortcuts-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+            .info-toast { white-space: normal; width: 90%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+<div class="homepage">
+    <!-- дата/время -->
+    <div class="datetime-section">
+        <div class="time" id="liveTime">--:--:--</div>
+        <div class="date" id="liveDate">загрузка...</div>
+    </div>
+
+    <!-- выбор поисковика -->
+    <div class="search-engine-bar">
+        <div class="engine-label">
+            <i class="fas fa-globe"></i>
+            <span>Поисковая система:</span>
+        </div>
+        <select id="searchEngineSelect">
+            <option value="google">Google</option>
+            <option value="bing">Bing</option>
+            <option value="duckduckgo">DuckDuckGo</option>
+            <option value="yahoo">Yahoo!</option>
+            <option value="yandex">Яндекс</option>
+        </select>
+    </div>
+
+    <!-- форма поиска -->
+    <div class="search-form">
+        <form id="searchForm" action="#" method="get">
+            <div class="input-group">
+                <input type="text" id="searchQuery" class="search-input" placeholder="Введите запрос..." autocomplete="off" autofocus>
+                <button type="submit" class="search-btn" aria-label="Искать"><i class="fas fa-arrow-right"></i></button>
+            </div>
+        </form>
+    </div>
+
+    <!-- БЛОК БЫСТРЫХ ССЫЛОК (прямо на странице) -->
+    <div class="shortcuts-container">
+        <div class="shortcuts-header">
+            <h3><i class="fas fa-thumbtack"></i> Мои сайты</h3>
+            <button id="openAddModalBtn" class="add-shortcut-btn"><i class="fas fa-plus-circle"></i> Добавить ссылку</button>
+        </div>
+        <div id="shortcutsGrid" class="shortcuts-grid">
+            <!-- сюда будут динамически добавляться плитки -->
+            <div class="empty-shortcuts">Нажмите «Добавить ссылку», чтобы создать свою плитку</div>
+        </div>
+    </div>
+    <footer><i class="fas fa-link"></i> Ваши ярлыки сохраняются локально</footer>
+</div>
+
+<!-- Модальное окно для добавления/редактирования ссылки -->
+<div id="linkModal" class="modal">
+    <div class="modal-content">
+        <h3><i class="fas fa-link"></i> <span id="modalTitle">Добавить сайт</span></h3>
+        <input type="text" id="modalShortcutName" placeholder="Название (например, internet.com)" autocomplete="off">
+        <input type="text" id="modalShortcutUrl" placeholder="Адрес сайта (https://...)" autocomplete="off">
+        <div class="modal-buttons">
+            <button id="modalSaveBtn" class="save-btn">Сохранить</button>
+            <button id="modalCancelBtn" class="cancel-btn">Отмена</button>
+        </div>
+    </div>
+</div>
+
+<div id="toastMsg" class="info-toast"></div>
+
+<script>
+    (function() {
+        // ---------- ПОИСКОВЫЕ СИСТЕМЫ (как в оригинале) ----------
+        const searchEngines = {
+            google: { name: "Google", url: "https://www.google.com/search", queryParam: "q" },
+            bing: { name: "Bing", url: "https://www.bing.com/search", queryParam: "q" },
+            duckduckgo: { name: "DuckDuckGo", url: "https://duckduckgo.com/", queryParam: "q" },
+            yahoo: { name: "Yahoo!", url: "https://search.yahoo.com/search", queryParam: "p" },
+            yandex: { name: "Яндекс", url: "https://yandex.ru/search/", queryParam: "text" }
+        };
+
+        // DOM элементы
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchQuery');
+        const engineSelect = document.getElementById('searchEngineSelect');
+        const liveTimeEl = document.getElementById('liveTime');
+        const liveDateEl = document.getElementById('liveDate');
+        const shortcutsGrid = document.getElementById('shortcutsGrid');
+        const openAddModalBtn = document.getElementById('openAddModalBtn');
+        const modal = document.getElementById('linkModal');
+        const modalTitleSpan = document.getElementById('modalTitle');
+        const shortcutNameInput = document.getElementById('modalShortcutName');
+        const shortcutUrlInput = document.getElementById('modalShortcutUrl');
+        const modalSaveBtn = document.getElementById('modalSaveBtn');
+        const modalCancelBtn = document.getElementById('modalCancelBtn');
+        const toast = document.getElementById('toastMsg');
+
+        // Состояние для редактирования
+        let editIndex = null;   // если null — режим добавления, иначе индекс редактируемой ссылки
+        let shortcuts = [];      // массив объектов { name, url }
+
+        // --- Вспомогательные функции ---
+        function showMessage(text, duration = 2500) {
+            if (window.toastTimeout) clearTimeout(window.toastTimeout);
+            toast.textContent = text;
+            toast.classList.add('show');
+            window.toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+
+        // --- Работа с localStorage (сохранение/загрузка ярлыков) ---
+        function saveShortcutsToLocal() {
+            localStorage.setItem('user_shortcuts', JSON.stringify(shortcuts));
+        }
+
+        function loadShortcutsFromLocal() {
+            const stored = localStorage.getItem('user_shortcuts');
+            if (stored) {
+                try {
+                    shortcuts = JSON.parse(stored);
+                    if (!Array.isArray(shortcuts)) shortcuts = [];
+                } catch(e) { shortcuts = []; }
+            } else {
+                // Добавим пару примеров для наглядности, но пользователь может удалить
+                shortcuts = [
+                    { name: "GitHub", url: "https://github.com" },
+                    { name: "YouTube", url: "https://youtube.com" },
+                    { name: "Wikipedia", url: "https://wikipedia.org" }
+                ];
+                saveShortcutsToLocal();
+            }
+        }
+
+        // --- Отрисовка плиток ---
+        function renderShortcuts() {
+            if (!shortcutsGrid) return;
+            if (shortcuts.length === 0) {
+                shortcutsGrid.innerHTML = `<div class="empty-shortcuts">📌 Нет сохранённых сайтов. Нажмите «Добавить ссылку»</div>`;
+                return;
+            }
+            let html = '';
+            shortcuts.forEach((item, idx) => {
+                // безопасное отображение
+                let displayName = item.name.trim() || "Сайт";
+                let displayUrl = item.url.trim() || "#";
+                // favicon эмуляция через эмодзи или иконку
+                let iconHtml = `<div class="shortcut-icon"><i class="fas fa-globe"></i></div>`;
+                // можно попробовать получить доменную иконку через favicon (но не обязательно)
+                html += `
+                    <div class="shortcut-card" data-url="${escapeHtml(displayUrl)}" data-index="${idx}">
+                        <div class="shortcut-icon">${getIconForUrl(displayUrl)}</div>
+                        <div class="shortcut-title" title="${escapeHtml(displayName)}">${escapeHtml(displayName)}</div>
+                        <div class="shortcut-url" title="${escapeHtml(displayUrl)}">${shortenUrl(displayUrl)}</div>
+                        <div class="card-actions">
+                            <button class="edit-btn" data-index="${idx}" title="Редактировать"><i class="fas fa-pen"></i></button>
+                            <button class="delete-btn" data-index="${idx}" title="Удалить"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            shortcutsGrid.innerHTML = html;
+            // Добавляем обработчики на карточки и кнопки
+            document.querySelectorAll('.shortcut-card').forEach(card => {
+                const url = card.getAttribute('data-url');
+                if (url && url !== '#') {
+                    card.addEventListener('click', (e) => {
+                        // Если клик не по кнопкам действий
+                        if (e.target.closest('.edit-btn') || e.target.closest('.delete-btn')) return;
+                        window.location.href = url;
+                    });
+                }
+            });
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const idx = parseInt(btn.getAttribute('data-index'));
+                    openEditModal(idx);
+                });
+            });
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const idx = parseInt(btn.getAttribute('data-index'));
+                    deleteShortcut(idx);
+                });
+            });
+        }
+
+        // простой helper: иконка по домену
+        function getIconForUrl(url) {
+            try {
+                const host = new URL(url).hostname;
+                if (host.includes('github')) return '<i class="fab fa-github"></i>';
+                if (host.includes('youtube')) return '<i class="fab fa-youtube"></i>';
+                if (host.includes('wikipedia')) return '<i class="fab fa-wikipedia-w"></i>';
+                if (host.includes('google')) return '<i class="fab fa-google"></i>';
+                if (host.includes('reddit')) return '<i class="fab fa-reddit"></i>';
+                if (host.includes('twitter') || host.includes('x.com')) return '<i class="fab fa-twitter"></i>';
+            } catch(e) {}
+            return '<i class="fas fa-link"></i>';
+        }
+
+        function shortenUrl(url, maxLen = 35) {
+            try {
+                let u = new URL(url);
+                let host = u.hostname;
+                if (host.startsWith('www.')) host = host.slice(4);
+                if (host.length > maxLen) return host.slice(0, maxLen-3) + '...';
+                return host;
+            } catch(e) {
+                return url.length > maxLen ? url.slice(0, maxLen-3)+'...' : url;
+            }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+                return c;
+            });
+        }
+
+        // --- Добавление / редактирование ---
+        function openAddModal() {
+            editIndex = null;
+            modalTitleSpan.innerText = "Добавить сайт";
+            shortcutNameInput.value = "";
+            shortcutUrlInput.value = "";
+            modal.style.display = "flex";
+            shortcutNameInput.focus();
+        }
+
+        function openEditModal(index) {
+            if (index < 0 || index >= shortcuts.length) return;
+            editIndex = index;
+            modalTitleSpan.innerText = "Редактировать ссылку";
+            shortcutNameInput.value = shortcuts[index].name;
+            shortcutUrlInput.value = shortcuts[index].url;
+            modal.style.display = "flex";
+            shortcutNameInput.focus();
+        }
+
+        function deleteShortcut(index) {
+            if (index < 0 || index >= shortcuts.length) return;
+            if (confirm(`Удалить "${shortcuts[index].name}"?`)) {
+                shortcuts.splice(index, 1);
+                saveShortcutsToLocal();
+                renderShortcuts();
+                showMessage(" Ярлык удалён", 1500);
+            }
+        }
+
+        function saveCurrentModal() {
+            let name = shortcutNameInput.value.trim();
+            let url = shortcutUrlInput.value.trim();
+            if (!name) {
+                showMessage("Введите название сайта", 1500);
+                return;
+            }
+            if (!url) {
+                showMessage("Введите адрес (https://...)", 1500);
+                return;
+            }
+            // добавим протокол если отсутствует
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+            // валидация url
+            try {
+                new URL(url);
+            } catch(e) {
+                showMessage("Некорректный URL. Пример: https://example.com", 2000);
+                return;
+            }
+            if (editIndex !== null) {
+                // редактирование
+                shortcuts[editIndex] = { name: name, url: url };
+                showMessage(`✏️ Ссылка "${name}" обновлена`, 1500);
+            } else {
+                // добавление новой
+                shortcuts.push({ name: name, url: url });
+                showMessage(`Добавлен "${name}"`, 1500);
+            }
+            saveShortcutsToLocal();
+            renderShortcuts();
+            closeModal();
+        }
+
+        function closeModal() {
+            modal.style.display = "none";
+            editIndex = null;
+        }
+
+        // --- Поисковая система и время (как в исходном коде) ---
+        function loadSavedEngine() {
+            const saved = localStorage.getItem('user_search_engine');
+            if (saved && searchEngines[saved]) engineSelect.value = saved;
+            else engineSelect.value = 'google';
+        }
+        function saveEnginePreference(engineKey) {
+            localStorage.setItem('user_search_engine', engineKey);
+        }
+        function performSearch(event) {
+            event.preventDefault();
+            let query = searchInput.value.trim();
+            if (query === "") {
+                showMessage("Введите поисковый запрос", 1500);
+                searchInput.focus();
+                return;
+            }
+            const selectedEngine = engineSelect.value;
+            const engine = searchEngines[selectedEngine];
+            if (!engine) return;
+            const searchUrl = new URL(engine.url);
+            searchUrl.searchParams.set(engine.queryParam, query);
+            window.location.href = searchUrl.toString();
+        }
+
+        function updateDateTime() {
+            const now = new Date();
+            liveTimeEl.textContent = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute:'2-digit', second:'2-digit' });
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            liveDateEl.textContent = now.toLocaleDateString('ru-RU', options).replace(/^./, (c) => c.toUpperCase());
+        }
+
+        // --- Инициализация ---
+        function init() {
+            loadShortcutsFromLocal();
+            renderShortcuts();
+            loadSavedEngine();
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            searchForm.addEventListener('submit', performSearch);
+            engineSelect.addEventListener('change', () => saveEnginePreference(engineSelect.value));
+            openAddModalBtn.addEventListener('click', openAddModal);
+            modalSaveBtn.addEventListener('click', saveCurrentModal);
+            modalCancelBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+            searchInput.focus();
+        }
+        init();
+    })();
+</script>
+</body>
+</html>
